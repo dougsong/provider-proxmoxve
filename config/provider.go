@@ -10,12 +10,12 @@ import (
 
 	ujconfig "github.com/upbound/upjet/pkg/config"
 
-	"github.com/upbound/upjet-provider-template/config/null"
+	"github.com/dougsong/provider-proxmoxve/config/null"
 )
 
 const (
-	resourcePrefix = "template"
-	modulePath     = "github.com/upbound/upjet-provider-template"
+	resourcePrefix = "proxmoxve"
+	modulePath     = "github.com/dougsong/provider-proxmoxve"
 )
 
 //go:embed schema.json

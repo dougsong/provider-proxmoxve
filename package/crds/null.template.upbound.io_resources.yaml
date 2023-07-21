@@ -5,14 +5,14 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.11.3
   creationTimestamp: null
-  name: resources.null.template.upbound.io
+  name: resources.null.proxmoxve.upbound.io
 spec:
-  group: null.template.upbound.io
+  group: null.proxmoxve.upbound.io
   names:
     categories:
     - crossplane
     - managed
-    - template
+    - proxmoxve
     kind: Resource
     listKind: ResourceList
     plural: resources
