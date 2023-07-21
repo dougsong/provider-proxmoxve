@@ -10,7 +10,7 @@ export TERRAFORM_PROVIDER_SOURCE ?= Telmate/proxmox
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/Telmate/terraform-provider-proxmox
 export TERRAFORM_PROVIDER_VERSION ?= 2.9.14
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-proxmox
-export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= https://releases.hashicorp.com/$(TERRAFORM_PROVIDER_DOWNLOAD_NAME)/$(TERRAFORM_PROVIDER_VERSION)
+export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= https://github.com/Telmate/$(TERRAFORM_PROVIDER_DOWNLOAD_NAME)/releases/download/$(TERRAFORM_PROVIDER_VERSION)
 export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-proxmox_v2.9.14
 export TERRAFORM_DOCS_PATH ?= docs/resources
 
