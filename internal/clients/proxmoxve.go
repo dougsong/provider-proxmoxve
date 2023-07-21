@@ -9,13 +9,11 @@ import (
 	"encoding/json"
 
 	"github.com/crossplane/crossplane-runtime/pkg/resource"
+	"github.com/dougsong/provider-proxmoxve/apis/v1beta1"
 	"github.com/pkg/errors"
+	"github.com/upbound/upjet/pkg/terraform"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/upbound/upjet/pkg/terraform"
-
-	"github.com/dougsong/provider-proxmoxve/apis/v1beta1"
 )
 
 const (
@@ -25,6 +23,16 @@ const (
 	errTrackUsage           = "cannot track ProviderConfig usage"
 	errExtractCredentials   = "cannot extract credentials"
 	errUnmarshalCredentials = "cannot unmarshal proxmoxve credentials as JSON"
+)
+
+const (
+	keyPmApiUrl = "pm_api_url"
+
+	keyPmUser     = "pm_user"
+	keyPmPassword = "pm_password"
+
+	keyPmApiTokenId     = "pm_api_token_id"
+	keyPmApiTokenSecret = "pm_api_token_secret"
 )
 
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which
@@ -63,10 +71,13 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 		}
 
 		// Set credentials in Terraform provider configuration.
-		/*ps.Configuration = map[string]any{
-			"username": creds["username"],
-			"password": creds["password"],
-		}*/
+		ps.Configuration = map[string]any{
+			keyPmApiUrl:         creds[keyPmApiUrl],
+			keyPmUser:           creds[keyPmUser],
+			keyPmPassword:       creds[keyPmPassword],
+			keyPmApiTokenId:     creds[keyPmApiTokenId],
+			keyPmApiTokenSecret: creds[keyPmApiTokenSecret],
+		}
 		return ps, nil
 	}
 }

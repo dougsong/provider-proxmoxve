@@ -9,16 +9,18 @@ import (
 
 	"github.com/upbound/upjet/pkg/controller"
 
-	resource "github.com/dougsong/provider-proxmoxve/internal/controller/null/resource"
+	lxc "github.com/dougsong/provider-proxmoxve/internal/controller/lxc/lxc"
 	providerconfig "github.com/dougsong/provider-proxmoxve/internal/controller/providerconfig"
+	qemu "github.com/dougsong/provider-proxmoxve/internal/controller/vm/qemu"
 )
 
 // Setup creates all controllers with the supplied logger and adds them to
 // the supplied manager.
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
-		resource.Setup,
+		lxc.Setup,
 		providerconfig.Setup,
+		qemu.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {
 			return err

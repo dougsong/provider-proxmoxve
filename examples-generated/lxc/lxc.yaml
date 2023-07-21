@@ -1,0 +1,28 @@
+apiVersion: lxc.proxmoxve.upbound.io/v1alpha1
+kind: Lxc
+metadata:
+  annotations:
+    meta.upbound.io/example-id: lxc/v1alpha1/lxc
+  labels:
+    testing.upbound.io/example-name: basic
+  name: basic
+spec:
+  forProvider:
+    hostname: lxc-basic
+    network:
+    - bridge: vmbr0
+      ip: dhcp
+      name: eth0
+    ostemplate: local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz
+    passwordSecretRef:
+      key: example-key
+      name: example-secret
+      namespace: upbound-system
+    rootfs:
+    - size: 8G
+      storage: local-zfs
+    targetNode: pve
+    unprivileged: true
+
+---
+

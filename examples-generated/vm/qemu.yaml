@@ -1,0 +1,16 @@
+apiVersion: vm.proxmoxve.upbound.io/v1alpha1
+kind: Qemu
+metadata:
+  annotations:
+    meta.upbound.io/example-id: vm/v1alpha1/qemu
+  labels:
+    testing.upbound.io/example-name: resource-name
+  name: resource-name
+spec:
+  forProvider:
+    iso: ISO file name
+    name: VM-name
+    targetNode: Node to create the VM on
+
+---
+
