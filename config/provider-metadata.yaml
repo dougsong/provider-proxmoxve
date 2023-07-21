@@ -1,9 +1,314 @@
-name: hashicorp/null
+name: Telmate/proxmox
 resources:
-    null_resource Resource - terraform-provider-null:
-        subCategory: ""
-        description: The null_resource resource implements the standard resource lifecycle but takes no further action. The triggers argument allows specifying an arbitrary set of values that, when changed, will cause the resource to be replaced.
-        name: null_resource Resource - terraform-provider-null
-        title: null_resource Resource - terraform-provider-null
-        argumentDocs: {}
+    proxmox_lxc:
+        subCategory: LXC
+        description: Provides a resource to manage LXC
+        name: proxmox_lxc
+        title: proxmox_lxc
+        examples:
+            - name: basic
+              manifest: |-
+                {
+                  "hostname": "lxc-basic",
+                  "network": [
+                    {
+                      "bridge": "vmbr0",
+                      "ip": "dhcp",
+                      "name": "eth0"
+                    }
+                  ],
+                  "ostemplate": "local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz",
+                  "password": "BasicLXCContainer",
+                  "rootfs": [
+                    {
+                      "size": "8G",
+                      "storage": "local-zfs"
+                    }
+                  ],
+                  "target_node": "pve",
+                  "unprivileged": true
+                }
+            - name: multiple_mountpoints
+              manifest: |-
+                {
+                  "hostname": "lxc-multiple-mountpoints",
+                  "mountpoint": [
+                    {
+                      "key": "0",
+                      "mp": "/mnt/container/storage-backed-mount-point",
+                      "size": "12G",
+                      "slot": 0,
+                      "storage": "local-lvm"
+                    },
+                    {
+                      "key": "1",
+                      "mp": "/mnt/container/bind-mount-point",
+                      "size": "256G",
+                      "slot": 1,
+                      "storage": "/srv/host/bind-mount-point",
+                      "volume": "/srv/host/bind-mount-point"
+                    },
+                    {
+                      "key": "2",
+                      "mp": "/mnt/container/device-mount-point",
+                      "size": "32G",
+                      "slot": 2,
+                      "storage": "/dev/sdg",
+                      "volume": "/dev/sdg"
+                    }
+                  ],
+                  "network": [
+                    {
+                      "bridge": "vmbr0",
+                      "ip": "dhcp",
+                      "ip6": "dhcp",
+                      "name": "eth0"
+                    }
+                  ],
+                  "ostemplate": "local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz",
+                  "ostype": "ubuntu",
+                  "rootfs": [
+                    {
+                      "size": "8G",
+                      "storage": "local-zfs"
+                    }
+                  ],
+                  "ssh_public_keys": "ssh-rsa \u003cpublic_key_1\u003e user@example.com\nssh-ed25519 \u003cpublic_key_2\u003e user@example.com\n",
+                  "target_node": "pve",
+                  "unprivileged": true
+                }
+            - name: advanced_features
+              manifest: |-
+                {
+                  "features": [
+                    {
+                      "fuse": true,
+                      "mount": "nfs;cifs",
+                      "nesting": true
+                    }
+                  ],
+                  "hostname": "lxc-advanced-features",
+                  "mountpoint": [
+                    {
+                      "mp": "/mnt/container/nfs",
+                      "size": "250G",
+                      "slot": "0",
+                      "storage": "/mnt/host/nfs"
+                    }
+                  ],
+                  "network": [
+                    {
+                      "bridge": "vmbr0",
+                      "ip": "10.0.0.2/24",
+                      "ip6": "auto",
+                      "name": "eth0"
+                    }
+                  ],
+                  "ostemplate": "local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz",
+                  "rootfs": [
+                    {
+                      "size": "8G",
+                      "storage": "local-zfs"
+                    }
+                  ],
+                  "ssh_public_keys": "ssh-rsa \u003cpublic_key_1\u003e user@example.com\nssh-ed25519 \u003cpublic_key_2\u003e user@example.com\n",
+                  "target_node": "pve",
+                  "unprivileged": true
+                }
+            - name: basic
+              manifest: |-
+                {
+                  "clone": "8001",
+                  "hostname": "lxc-clone",
+                  "target_node": "pve"
+                }
+        argumentDocs:
+            acl: '- A boolean for enabling ACL support. Default is false.'
+            arch: '- Sets the container OS architecture type. Default is "amd64".'
+            backup: '- A boolean for including the mount point in backups. Default is false.'
+            bridge: '- The bridge to attach the network interface to (e.g. "vmbr0").'
+            bwlimit: '- A number for setting the override I/O bandwidth limit (in KiB/s).'
+            clone: '- The lxc vmid to clone'
+            clone_storage: '- Target storage for full clone.'
+            cmode: |-
+                - Configures console mode. "tty" tries to open a connection to one of the available tty devices. "console"
+                tries to attach to /dev/console instead. "shell" simply invokes a shell inside the container (no login). Default
+                is "tty".
+            console: '- A boolean to attach a console device to the container. Default is true.'
+            cores: '- The number of cores assigned to the container. A container can use all available cores by default.'
+            cpulimit: '- A number to limit CPU usage by. Default is 0.'
+            cpuunits: '- A number of the CPU weight that the container possesses. Default is 1024.'
+            description: '- Sets the container description seen in the web interface.'
+            features: '- An object for allowing the container to access advanced features.'
+            firewall: '- A boolean to enable the firewall on the network interface.'
+            force: '- A boolean that allows the overwriting of pre-existing containers.'
+            full: |-
+                - When cloning, create a full copy of all disks. This is always done when you clone a normal CT. For CT
+                template it creates a linked clone by default.
+            fuse: '- A boolean for enabling FUSE mounts.'
+            gw: '- The IPv4 address belonging to the network interface''s default gateway.'
+            gw6: '- The IPv6 address of the network interface''s default gateway.'
+            hagroup: |-
+                - The HA group identifier the resource belongs to (requires hastate to be set!). See
+                the docs about HA for more
+                info.
+            hastate: |-
+                - Requested HA state for the resource. One of "started", "stopped", "enabled", "disabled", or "ignored". See
+                the docs about HA for more
+                info.
+            hookscript: |-
+                - A string
+                containing a volume identifier to a script
+                that will be executed during various steps throughout the container's lifetime. The script must be an executable file.
+            hostname: '- Specifies the host name of the container.'
+            hwaddr: |-
+                - A string to set a common MAC address with the I/G (Individual/Group) bit not set. Automatically
+                determined if not set.
+            ignore_unpack_errors: |-
+                - A boolean that determines if template extraction errors are ignored during container
+                creation.
+            ip: |-
+                - The IPv4 address of the network interface. Can be a static IPv4 address (in CIDR notation), "dhcp",
+                or "manual".
+            ip6: |-
+                - The IPv6 address of the network interface. Can be a static IPv6 address (in CIDR notation), "auto"
+                , "dhcp", or "manual".
+            key: |-
+                (required) - The number that identifies the mount point (i.e. the n
+                in mp[n]).
+            keyctl: '- A boolean for enabling the keyctl() system call.'
+            lock: '- A string for locking or unlocking the VM.'
+            memory: '- A number containing the amount of RAM to assign to the container (in MB).'
+            mount: '- Defines the filesystem types (separated by semicolons) that are allowed to be mounted.'
+            mountpoint: '- An object for defining a volume to use as a container mount point. Can be specified multiple times.'
+            mp: |-
+                (required) - The path to the mount point as seen from inside the container. The path must not contain
+                symlinks for security reasons.
+            mtu: '- A string to set the MTU on the network interface.'
+            name: (required) - The name of the network interface as seen from inside the container (e.g. "eth0").
+            nameserver: |-
+                - The DNS server IP address used by the container. If neither nameserver nor searchdomain are
+                specified, the values of the Proxmox host will be used by default.
+            nesting: '- A boolean to allow nested virtualization.'
+            network: '- An object defining a network interface for the container. Can be specified multiple times.'
+            onboot: '- A boolean that determines if the container will start on boot. Default is false.'
+            ostemplate: |-
+                - The volume identifier that points to
+                the OS template or backup file.
+            ostype: |-
+                - The operating system type, used by LXC to set up and configure the container. Automatically determined if
+                not set.
+            password: '- Sets the root password inside the container.'
+            pool: '- The name of the Proxmox resource pool to add this container to.'
+            protection: |-
+                - A boolean that enables the protection flag on this container. Stops the container and its disk from
+                being removed/updated. Default is false.
+            quota: '- A boolean for enabling user quotas inside the container for this mount point. Default is false.'
+            rate: '- A number that sets rate limiting on the network interface (Mbps).'
+            replicate: '- A boolean for including this volume in a storage replica job. Default is false.'
+            restore: '- A boolean to mark the container creation/update as a restore task.'
+            rootfs: '- An object for configuring the root mount point of the container. Can only be specified once.'
+            searchdomain: |-
+                - Sets the DNS search domains for the container. If neither nameserver nor searchdomain are
+                specified, the values of the Proxmox host will be used by default.
+            shared: '- A boolean for marking the volume as available on all nodes. Default is false.'
+            size: |-
+                (required) - Size of the underlying volume. Must end in T, G, M, or K (e.g. "1T", "1G", "1024M"
+                , "1048576K"). Note that this is a read only value.
+            slot: |-
+                (required) - A string containing the number that identifies the mount point (i.e. the n
+                in mp[n]).
+            ssh_public_keys: |-
+                - Multi-line string of SSH public keys that will be added to the container. Can be defined
+                using heredoc syntax.
+            start: '- A boolean that determines if the container is started after creation. Default is false.'
+            startup: |-
+                -
+                The startup and shutdown behaviour
+                of the container.
+            storage: |-
+                (required) - A string containing
+                the volume
+                , directory,
+                or device to be mounted into the
+                container (at the path specified by mp). E.g. local-lvm, local-zfs, local etc.
+            swap: '- A number that sets the amount of swap memory available to the container. Default is 512.'
+            tag: '- A number that specifies the VLAN tag of the network interface. Automatically determined if not set.'
+            tags: '- Tags of the container. This is only meta information.'
+            target_node: '- A string containing the cluster node name.'
+            template: '- A boolean that determines if this container is a template.'
+            tty: '- A number that specifies the TTYs available to the container. Default is 2.'
+            unique: '- A boolean that determines if a unique random ethernet address is assigned to the container.'
+            unprivileged: '- A boolean that makes the container run as an unprivileged user. Default is false.'
+            vmid: '- A number that sets the VMID of the container. If set to 0, the next available VMID is used. Default is 0.'
+        importStatements: []
+    proxmox_vm_qemu:
+        subCategory: VM
+        description: Provides a resource to manage VM
+        name: proxmox_vm_qemu
+        title: proxmox_vm_qemu
+        examples:
+            - name: resource-name
+              manifest: |-
+                {
+                  "iso": "ISO file name",
+                  "name": "VM-name",
+                  "target_node": "Node to create the VM on"
+                }
+            - name: preprovision-test
+              manifest: |-
+                {
+                  "os_type": "ubuntu",
+                  "preprovision": true
+                }
+            - name: preprovision-test
+              manifest: |-
+                {
+                  "connection": [
+                    {
+                      "host": "${self.ssh_host}",
+                      "port": "${self.ssh_port}",
+                      "private_key": "${self.ssh_private_key}",
+                      "type": "ssh",
+                      "user": "${self.ssh_user}"
+                    }
+                  ],
+                  "os_network_config": "auto eth0\niface eth0 inet dhcp\n",
+                  "os_type": "ubuntu",
+                  "preprovision": true,
+                  "ssh_forward_ip": "10.0.0.1",
+                  "ssh_private_key": "-----BEGIN RSA PRIVATE KEY-----\nprivate ssh key terraform\n-----END RSA PRIVATE KEY-----\n",
+                  "ssh_user": "terraform"
+                }
+            - name: resource-name
+              manifest: |-
+                {
+                  "disk": [
+                    {
+                      "type": "scsi"
+                    },
+                    {
+                      "type": "ide"
+                    },
+                    {
+                      "type": "scsi"
+                    },
+                    {
+                      "type": "sata"
+                    }
+                  ]
+                }
+        argumentDocs:
+            additional_wait: '- (do not use, api should manage timeouts)'
+            agent = 0: ) unless the installed OS contains the Agent in OS install configurations
+            boot: ': a valid boot order must be specified with Network type included (eg order=net0;scsi0)'
+            bridge: '- (Optional; use network.bridge instead)'
+            clone_wait: '- (do not use, api should manage timeouts)'
+            disk_gb: '- (Optional; use disk.size instead)'
+            mac: '- (Optional; use network.macaddr instead)'
+            nic: '- (Optional; use network instead)'
+            preprovision: '- (do not use, provider do not fully support preprovisioning anymore)'
+            storage: '- (Optional; use disk.storage instead)'
+            storage_type: '- (Optional; use disk.type instead)'
+            vlan: '- (Optional; use network.tag instead)'
         importStatements: []

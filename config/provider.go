@@ -8,9 +8,9 @@ import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
 
+	"github.com/dougsong/provider-proxmoxve/config/lxc"
+	"github.com/dougsong/provider-proxmoxve/config/vm"
 	ujconfig "github.com/upbound/upjet/pkg/config"
-
-	"github.com/dougsong/provider-proxmoxve/config/null"
 )
 
 const (
@@ -35,7 +35,8 @@ func GetProvider() *ujconfig.Provider {
 
 	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
-		null.Configure,
+		vm.Configure,
+		lxc.Configure,
 	} {
 		configure(pc)
 	}

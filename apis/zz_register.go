@@ -10,9 +10,10 @@ package apis
 import (
 	"k8s.io/apimachinery/pkg/runtime"
 
-	v1alpha1 "github.com/dougsong/provider-proxmoxve/apis/null/v1alpha1"
+	v1alpha1 "github.com/dougsong/provider-proxmoxve/apis/lxc/v1alpha1"
 	v1alpha1apis "github.com/dougsong/provider-proxmoxve/apis/v1alpha1"
 	v1beta1 "github.com/dougsong/provider-proxmoxve/apis/v1beta1"
+	v1alpha1vm "github.com/dougsong/provider-proxmoxve/apis/vm/v1alpha1"
 )
 
 func init() {
@@ -21,6 +22,7 @@ func init() {
 		v1alpha1.SchemeBuilder.AddToScheme,
 		v1alpha1apis.SchemeBuilder.AddToScheme,
 		v1beta1.SchemeBuilder.AddToScheme,
+		v1alpha1vm.SchemeBuilder.AddToScheme,
 	)
 }
 
