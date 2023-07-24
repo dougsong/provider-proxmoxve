@@ -286,4 +286,7 @@ jobs:
           password: ${{ secrets.UPBOUND_MARKETPLACE_PUSH_ROBOT_PSW }}
 
       - name: Publish Artifacts
-        run: make publish BRANCH_NAME=${GITHUB_REF##*/}
+        run: up login -u $UP_USER -p $UP_PASS && make publish BRANCH_NAME=${GITHUB_REF##*/}
+        env:
+          UP_USER: ${{ secrets.UPBOUND_MARKETPLACE_PUSH_ROBOT_USR }}
+          UP_PASS: ${{ secrets.UPBOUND_MARKETPLACE_PUSH_ROBOT_PSW }}
