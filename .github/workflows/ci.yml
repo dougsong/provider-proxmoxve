@@ -230,14 +230,6 @@ jobs:
           version: ${{ env.DOCKER_BUILDX_VERSION }}
           install: true
 
-      - name: Login to Upbound
-        uses: docker/login-action@v2
-        if: env.UPBOUND_MARKETPLACE_PUSH_ROBOT_USR != ''
-        with:
-          registry: xpkg.upbound.io
-          username: ${{ secrets.UPBOUND_MARKETPLACE_PUSH_ROBOT_USR }}
-          password: ${{ secrets.UPBOUND_MARKETPLACE_PUSH_ROBOT_PSW }}
-
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -284,6 +276,14 @@ jobs:
         with:
           name: output
           path: _output/**
+          
+      - name: Login to Upbound
+        uses: docker/login-action@v2
+        if: env.UPBOUND_MARKETPLACE_PUSH_ROBOT_USR != ''
+        with:
+          registry: xpkg.upbound.io
+          username: ${{ secrets.UPBOUND_MARKETPLACE_PUSH_ROBOT_USR }}
+          password: ${{ secrets.UPBOUND_MARKETPLACE_PUSH_ROBOT_PSW }}
 
       - name: Publish Artifacts
         run: make publish BRANCH_NAME=${GITHUB_REF##*/}
