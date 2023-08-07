@@ -10,7 +10,7 @@ ProxmoxVE API.
 Install the provider by using the following command after changing the image tag
 to the [latest release](https://marketplace.upbound.io/providers/dougsong/provider-proxmoxve):
 ```
-up ctp provider install dougsong/provider-proxmoxve:v0.1.0
+up ctp provider install zhenran/provider-proxmoxve:v0.0.1
 ```
 
 Alternatively, you can use declarative installation:
@@ -21,7 +21,7 @@ kind: Provider
 metadata:
   name: provider-proxmoxve
 spec:
-  package: dougsong/provider-proxmoxve:v0.1.0
+  package: zhenran/provider-proxmoxve:v0.0.1
 EOF
 ```
 
