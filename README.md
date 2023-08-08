@@ -21,7 +21,7 @@ kind: Provider
 metadata:
   name: provider-proxmoxve
 spec:
-  package: zhenran/provider-proxmoxve:v0.0.1
+  package: xpkg.upbound.io/zhenran/provider-proxmoxve:v0.0.1
 EOF
 ```
 
