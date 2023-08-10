@@ -66,7 +66,7 @@ IMAGES = $(PROJECT_NAME)
 # ====================================================================================
 # Setup XPKG
 
-XPKG_REG_ORGS ?= index.docker.io/zhenran
+XPKG_REG_ORGS ?= xpkg.upbound.io/zhenran index.docker.io/zhenran
 # NOTE(hasheddan): skip promoting on xpkg.upbound.io as channel tags are
 # inferred.
 XPKG_REG_ORGS_NO_PROMOTE ?= xpkg.upbound.io/zhenran
@@ -178,6 +178,11 @@ local-deploy: build controlplane.up local.xpkg.deploy.provider.$(PROJECT_NAME)
 	@$(OK) running locally built provider
 
 e2e: local-deploy uptest
+
+login: $(UP)
+	@$(INFO) up login
+	@$(UP) login -t $(UPBOUND_TOKEN)
+	@$(OK) up login
 
 .PHONY: cobertura submodules fallthrough run crds.clean
 

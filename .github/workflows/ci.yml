@@ -18,6 +18,7 @@ env:
   # step 'if env.XXX != ""', so we copy these to succinctly test whether
   # credentials have been provided before trying to run steps that need them.
   UPBOUND_MARKETPLACE_PUSH_ROBOT_USR: ${{ secrets.UPBOUND_MARKETPLACE_PUSH_ROBOT_USR }}
+  UPBOUND_TOKEN: ${{ secrets.UPBOUND_TOKEN }}
 
 jobs:
   detect-noop:
@@ -292,4 +293,4 @@ jobs:
           path: _output/**
 
       - name: Publish Artifacts
-        run: make publish BRANCH_NAME=${GITHUB_REF##*/}
+        run: make login && make -j2 publish BRANCH_NAME=${GITHUB_REF##*/}
